@@ -1,0 +1,50 @@
+<h1>New Vehicle</h1>
+<p>
+  {{vehicle | json}}
+</p>
+<form #f="ngForm" (ngSubmit)="submit()">
+  <div class="form-gpoup">
+    <label for="make">Make</label>
+    <select name="make" id="make" [(ngModel)]="vehicle.makeId" class="form-control" (change)="onMakeChange()" required #make="ngModel">
+    <option value=""></option>
+    <option *ngFor="let m of makes" value="{{m.id}}">{{m.name}}</option>
+    </select>
+    <div class="alert alert-danger" *ngIf="make.touched && !make.valid">Please specify the maker </div>
+  </div>
+<div class="form-group">
+  <label for="models">Model</label>
+  <select id="modelId" class="form-control" [(ngModel)]="vehicle.modelId" required name="modelId">
+    <option value=""></option>
+    <option *ngFor="let mo of modelId" value="{{mo.id}}">{{mo.name}}</option>
+  </select></div>
+  <p>Is this vehicle registered?</p>
+
+  <div class="custom-control custom-radio">
+      
+      <input type="radio" name="isRegistered" id="registered" [value]="true" [(ngModel)]="vehicle.isRegistered" class="custom-control-input">
+      <label for="registered"  class="custom-control-label">yes</label>
+  </div>
+    <div class="custom-control custom-radio">
+      
+      <input type="radio" name="isRegistered" id="notRegistered" [value]="false" [(ngModel)]="vehicle.isRegistered"  class="custom-control-input">
+      <label for="notRegistered"  class="custom-control-label">no</label>
+    </div>
+
+
+  <h2>Features</h2>
+  <div *ngFor="let f of vehicleFeatures" class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="vehicleFeatures{{f.id}}" (change)="onFeatureToggle(f.id,$event)" [checked]="vehicle.vehicleFeatures.includes(f.id)">
+    <label class="custom-control-label" for="vehicleFeatures{{f.id}}" >
+        {{f.name}}
+    </label>
+  </div>
+<h2>Contact</h2>
+<div class="form-group"><label for="contactName">Name</label>
+  <input id="contactName" autocomplete="off" type="text" class="form-control"  [(ngModel)]="vehicle.Contact.Name" name="contactName"></div>
+<div class="form-group"><label for="contactPhone">Phone</label>
+  <input id="contactPhone" autocomplete="off" type="text" class="form-control" [(ngModel)]="vehicle.Contact.Phone"   name="contactPhone"></div>
+<div class="form-group"><label for="contactEmail">Email</label>
+  <input id="contactEmail" autocomplete="off" class="form-control" [(ngModel)]="vehicle.Contact.Email" name="contactEmail"></div>
+  <button class="btn btn-primary" [disabled]="!f.valid" >Save</button>
+  <button *ngIf="vehicle.id" class="btn btn-danger" type="button" (click)="delete()"  >Delete</button>
+</form>

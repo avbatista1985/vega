@@ -1,0 +1,52 @@
+<h2>Vehicles</h2>
+<p>
+  <a [routerLink]="['/vehicles/new']" class="btn btn-primary" role="button">New Vehicle</a> 
+</p>
+<div class="rounded border border-dark" style="height: 140px; background-color: rgba(85, 83, 83, 0.1);">
+  <div class="form-group">
+    <label for=",make">Make</label>
+    <select name="" id="make" class="form-control" [(ngModel)]="query.makeId" (change)="onFilterChange()">
+      <option value=""></option>
+      <option *ngFor="let m of makes" value="{{m.id}}">{{m.name}}</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" (click)="resetFilter()" >Reset</button>    
+</div>
+
+<table class='table table-striped ' *ngIf="vehicles">
+  <thead>
+    <tr>
+      <th *ngFor="let col of column">
+        <div *ngIf="col.isSortable" (click)="sortBy(col.Key)">
+          {{col.title}}
+          <i *ngIf="query.sortBy===col.Key"
+          class="fas"
+          [class.fa-sort-up]="query.isSortAscending"
+          [class.fa-sort-down]="!query.isSortAscending"
+          ></i>
+        </div>
+        <div *ngIf="!col.isSortable">
+          {{col.title}}
+          
+        </div>
+      </th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vehicle of vehicles">
+      <td>{{ vehicle.id }}</td>
+      <td>{{ vehicle.make.name }}</td>
+      <td>{{ vehicle.model.name }}</td>
+      <td>{{ vehicle.contact.name }}</td> 
+      <td>
+              <a  [routerLink]='["/vehicles/"+vehicle.id]'>View</a>     
+    </td>
+    </tr>
+  </tbody> 
+  <i class="fas fa-plus fa-lg mr-2"></i> 
+
+  <i class="fas fa-sort-down"></i>
+</table> 
+
+<app-pagination [total-items]="totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></app-pagination>  
